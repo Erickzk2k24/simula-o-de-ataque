@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Ransomware - 3D</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="scene">
+        <div class="container">
+            <!-- Nome em 3D -->
+            <h1 class="name3d">Ataque</h1>
+
+            <h2>Simulação de Ataque de Ransomware</h2>
+            <form id="ransomwareForm">
+                <label for="directory">Diretório a ser atacado:</label>
+                <input type="text" id="directory" name="directory" placeholder="Caminho do diretório" required>
+                <button type="submit">Iniciar Simulação</button>
+            </form>
+            
+            <div id="progress">
+                <!-- Aqui vamos mostrar os detalhes progressivos -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#ransomwareForm").submit(function(event) {
+                event.preventDefault();  // Impede o envio padrão do formulário
+
+                var directory = $("#directory").val();
+                $("#progress").html("Iniciando simulação...<br>");
+
+                // Envia a requisição AJAX
+                $.ajax({
+                    url: "/simulate",  // Rota de simulação
+                    type: "POST",
+                    data: {directory: directory},
+                    success: function(response) {
+                        $("#progress").html(response.result);  // Atualiza o progresso
+                    },
+                    error: function() {
+                        $("#progress").html("Erro ao realizar a simulação.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
